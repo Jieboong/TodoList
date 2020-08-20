@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer class="footer">
       <div>TODO TODAY by Jieboong </div>
       Go to
       <a href="https://github.com/Jieboong">My github</a>
@@ -12,7 +12,5 @@ export default {
 
 }
 </script>
-
 <style>
-
-</style>
+</style>]

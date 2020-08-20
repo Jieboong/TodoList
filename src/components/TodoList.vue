@@ -18,5 +18,7 @@ export default {
 </script>
 
 <style>
-
+    .list{
+        text-align: center;
+    }
 </style>

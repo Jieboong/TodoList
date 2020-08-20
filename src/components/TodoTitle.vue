@@ -2,7 +2,7 @@
   <div class = "title">
       <p class ="title__message">{{message}}</p>
       <p class = "title__task">
-          <span class="today_total">{{todaytotal}}</span>
+          <span class="title__task-total">{{taskTotal}}</span>
           things to do TODAY
       </p>
   </div>
@@ -13,12 +13,18 @@ export default {
     data() {
         return {
             message: "Work Hard!",
-            todaytotal : 5
+            taskTotal : 5
         }
     }
 }
 </script>
 
 <style>
+    .title__message{
+        text-align : center;
+    }
+    .title__task{
+        text-align :center;
 
+    }
 </style>

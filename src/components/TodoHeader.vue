@@ -4,6 +4,7 @@
   <header class = "header">
       <h1 class ="logo">TODO TODAY</h1>
       <p class = "date"> of {{ timestamp}}</p>
+      <div style="clear:both"></div>
   </header>
 </template>
 
@@ -34,5 +35,15 @@ export default {
 </script>
 
 <style>
-
+ 
+    .logo{
+        text-align: left;
+        float : left;
+        
+    }
+    .date{
+        text-align:right;
+        float:right;
+        padding :1rem;
+    }
 </style>
