@@ -14,7 +14,7 @@
           <p class = "list__date">{{todoItem.date}}</p>
 
           <button class ="list__delete" v-on:click = "removeTodo(todoItem, index)">
-              <div class="blind">Del</div>
+              <div class="blind">×</div>
             </button>
       </li>
   </div>
@@ -25,12 +25,10 @@ export default {
     props: ["propsdata"],
     methods:{
         toggleComplete(todoItem) {
-            todoItem.completed = !todoItem.completed;
-            localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+            this.$emit("toggleItem",todoItem);
         },
         removeTodo(todoItem, index){
-            localStorage.removeItem(todoItem.item);
-            this.todoItems.splice(index,1);
+            this.$emit("removeItem",todoItem,index);
         }
     }
 }

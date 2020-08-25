@@ -1,11 +1,14 @@
 <template>
   <div id="app"><div id = "top">
       <TodoHeader />
-      <TodoTitle />
+      <TodoTitle v-bind:propsdata ="leftCount"/>
       <TodoInput v-on:addItem="addOneItem"/>
     </div><div id = "bottom">
-      <TodoController />
-      <TodoList v-bind:propsdata="todoItems"/>
+      <TodoController v-on:clearAll ="clearAllItems"/>
+      <TodoList v-bind:propsdata="todoItems"
+                v-on:removeItem="removeOneItem"
+                v-on:toggleItem="toggleOneItem"
+      />
       <TodoFooter />
     </div></div>
 </template>
@@ -32,9 +35,11 @@ export default {
   },
   data() {
     return {
-      todoItems: []
+      todoItems: [],
+      leftCount:0
     }
   },
+  
   created() {
     if (localStorage.lenght > 0) {
       for(let i = 0 ; i <localStorage.length; i++) {
@@ -45,6 +50,13 @@ export default {
         }
       }
     }
+    let leftCount=0;
+    for (let i = 0; i< this.todoItems.length; i++) {
+      if (this.todoItems[i].completed=== false) {
+        leftCount++;
+      }
+    }
+    return leftCount;
   },
   methods: {
     addOneItem(todoItem) {
@@ -52,11 +64,27 @@ export default {
           item : todoItem,
           date : getDate().date,
           time: getDate().time,
-          complete:false
+          completed:false
         };
 
       localStorage.setItem(todoItem, JSON.stringify(value));
       this.todoItems.push(value);
+      this.leftCount++;
+    },
+    removeOneItem(todoItem, index) {
+      localStorage.removeItem(todoItem,index);
+      this.todoItems.splice(index,1);
+      this.leftCount--;
+    },
+    toggleOneItem(todoItem) {
+      todoItem.completed = !todoItem.completed;
+      localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+      this.leftCount--;
+    },
+    clearAllItems(){
+      this.todoItems = [];
+      localStorage.clear();
+      this.leftCount = 0;
     }
   }
 
