@@ -4,7 +4,8 @@
       <TodoTitle v-bind:propsdata ="leftCount"/>
       <TodoInput v-on:addItem="addOneItem"/>
     </div><div id = "bottom">
-      <TodoController v-on:clearAll ="clearAllItems"/>
+      <TodoController v-on:clearAll ="clearAllItems"
+                      v-on:sortItem="sortAllItem"/>
       <TodoList v-bind:propsdata="todoItems"
                 v-on:removeItem="removeOneItem"
                 v-on:toggleItem="toggleOneItem"
@@ -33,30 +34,28 @@ export default {
     TodoList,
     TodoFooter
   },
-  data() {
+  data() { 
     return {
       todoItems: [],
       leftCount:0
     }
-  },
-  
+  }, 
   created() {
-    if (localStorage.lenght > 0) {
+    if (localStorage.length > 0) {
       for(let i = 0 ; i <localStorage.length; i++) {
         if(localStorage.key(i) !== "loglevel:webpack-dev-server"){
+          let getitem = JSON.parse(localStorage.getItem(localStorage.key(i)));
           this.todoItems.push(
-            JSON.parse(localStorage.getItem(localStorage.key(i)))
+            getitem
           );
+          console.log(getitem.item);
+          if (getitem.completed === false){
+              this.leftCount++;
+            }
         }
       }
     }
-    let leftCount=0;
-    for (let i = 0; i< this.todoItems.length; i++) {
-      if (this.todoItems[i].completed=== false) {
-        leftCount++;
-      }
-    }
-    return leftCount;
+    
   },
   methods: {
     addOneItem(todoItem) {
@@ -77,15 +76,48 @@ export default {
       this.leftCount--;
     },
     toggleOneItem(todoItem) {
+      if (todoItem.completed === true) {
+        this.leftCount++;
+      } else{
+        this.leftCount--;
+      }
       todoItem.completed = !todoItem.completed;
       localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
-      this.leftCount--;
     },
     clearAllItems(){
       this.todoItems = [];
       localStorage.clear();
       this.leftCount = 0;
+    },
+    sortTodoLatest(){
+      this.todoItems.sort(function(a,b) {
+        return a.time-b.time;
+      });
+    },
+    sortTodoOldest() {
+      this.todoItems.sort(function(a,b) {
+        return b.time-a.time;
+      });
+    },
+    sortTodAtoZ() {
+      this.todoItems.sort(function(a,b) {
+        return a.item-b.item;
+      })
+    },
+    sortAllItem(selectedSort){
+      if (selectedSort.value === "date-asc") {
+        this.sortTodoLatest();
+      }
+      if (selectedSort.value === "date-desc"){
+        this.sortTodoOldest();
+      }
+      if (selectedSort.valu === "name-asc") {
+        this.sortTodoAtoZ();
+      }
     }
+  },
+  mounted(){
+    this.sortTodoOldest();
   }
 
 }

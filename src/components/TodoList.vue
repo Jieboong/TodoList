@@ -23,6 +23,11 @@
 <script>
 export default {
     props: ["propsdata"],
+    data(){
+        return{
+            todoItems: []
+        }
+    },
     methods:{
         toggleComplete(todoItem) {
             this.$emit("toggleItem",todoItem);

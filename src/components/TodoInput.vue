@@ -26,9 +26,7 @@ export default{
       }
     },
     clearInput(){
-      var el = document.getElementsByClassName('add_input');
-      for (var i = 0 ; i < el.length; i++)
-        el(i).value= '';
+      this.newTodoItem="";
     }
   }  
 }
