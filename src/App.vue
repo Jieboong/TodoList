@@ -1,8 +1,14 @@
 <template>
   <div id="app"><div id = "top">
       <TodoHeader />
-      <TodoTitle v-bind:propsdata ="leftCount"/>
+      <div v-if ="userName">
+      <TodoTitle v-bind:propsCount ="leftCount"
+                v-bind:propsName = "userName"/>
       <TodoInput v-on:addItem="addOneItem"/>
+      </div>
+      <div v-else>
+        <TodoHello v-on:addName="addUserName"/>
+      </div>
     </div><div id = "bottom">
       <TodoController v-on:clearAll ="clearAllItems"
                       v-on:sortItem="sortAllItem"/>
@@ -20,6 +26,7 @@ import TodoHeader from "./components/TodoHeader";
 import TodoController from "./components/TodoController";
 import TodoFooter from "./components/TodoFooter";
 import TodoInput from "./components/TodoInput";
+import TodoHello from "./components/TodoHello";
 import TodoList from "./components/TodoList";
 import TodoTitle from "./components/TodoTitle";
 import getDate from './assets/getDate.js';
@@ -30,6 +37,7 @@ export default {
     TodoHeader,
     TodoTitle,
     TodoInput,
+    TodoHello,
     TodoController,
     TodoList,
     TodoFooter
@@ -37,13 +45,16 @@ export default {
   data() { 
     return {
       todoItems: [],
-      leftCount:0
+      leftCount:0,
+      userName : ''
     }
   }, 
   created() {
+    this.userName = localStorage.getItem("userName");
+
     if (localStorage.length > 0) {
       for(let i = 0 ; i <localStorage.length; i++) {
-        if(localStorage.key(i) !== "loglevel:webpack-dev-server"){
+        if(localStorage.key(i) !== ("loglevel:webpack-dev-server" || "userName")){
           let getitem = JSON.parse(localStorage.getItem(localStorage.key(i)));
           this.todoItems.push(
             getitem
@@ -71,7 +82,7 @@ export default {
       this.leftCount++;
     },
     removeOneItem(todoItem, index) {
-      localStorage.removeItem(todoItem,index);
+      localStorage.removeItem(todoItem.item);
       this.todoItems.splice(index,1);
       this.leftCount--;
     },
@@ -99,7 +110,7 @@ export default {
         return b.time-a.time;
       });
     },
-    sortTodAtoZ() {
+    sortTodoAtoZ() {
       this.todoItems.sort(function(a,b) {
         return a.item-b.item;
       })
@@ -111,9 +122,12 @@ export default {
       if (selectedSort.value === "date-desc"){
         this.sortTodoOldest();
       }
-      if (selectedSort.valu === "name-asc") {
+      if (selectedSort.value === "name-asc") {
         this.sortTodoAtoZ();
       }
+    },
+    addUserName(userName){
+      this.userName= userName;
     }
   },
   mounted(){
