@@ -1,8 +1,8 @@
 <template>
-<div>
-    <div class="hello"> What is your name?</div>
-    <label for ="user_name">Name</label>
-    <input type="text" id = "user_name" v-model="userName" v-on:keyup.enter="addUserName">
+<div class = "hello">
+    <div class="hello__question"> What is your name?</div>
+    <label for ="user_name" class="hello__name">Name</label>
+    <input type="text" class= "user_name" v-model="userName" v-on:keyup.enter="addUserName">
 </div>
 </template>
 
