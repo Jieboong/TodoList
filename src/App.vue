@@ -30,6 +30,7 @@ import TodoHello from "./components/TodoHello";
 import TodoList from "./components/TodoList";
 import TodoTitle from "./components/TodoTitle";
 import getDate from './assets/getDate.js';
+import axios from 'axios';
 
 export default {
   name: "App",
@@ -76,6 +77,8 @@ export default {
           time: getDate().time,
           completed:false
         };
+        // var url = 'https://jsonplaceholder.typicode.com/todos/1';
+        // axios.post(url, value);
 
       localStorage.setItem(todoItem, JSON.stringify(value));
       this.todoItems.push(value);
